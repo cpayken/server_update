@@ -1,2 +1,2 @@
 # server_update
-Ansible playbook to update Ubuntu Server
+Ansible playbook to update Ubuntu Server.
