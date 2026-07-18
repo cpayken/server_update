@@ -1,0 +1,19 @@
+all:
+  children:
+    edge_machines:
+      vars:
+        ansible_user: username                # Applies this user to all edge machines
+        ansible_ssh_private_key_file: ~/.ssh/id_rsa_edge
+      hosts:
+        edge_machine1:
+          ansible_host: 192.168.xxx.xxx            # The actual IP or DNS name
+        edge_machine2:
+          ansible_host: 192.168.xxx.xxx
+        edge_machine3:
+          ansible_host: 192.168.xxx.xxx
+        edge_machine4:
+          ansible_host: 192.168.xxx.xxx
+        edge_machine5:
+          ansible_host: 192.168.xxx.xxx
+        edge_machine6:
+          ansible_host: 192.168.xxx.xxx	
