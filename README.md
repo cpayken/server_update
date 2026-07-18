@@ -20,6 +20,10 @@ sudo apt remove ansible -y
 sudo apt autoremove -y
 ```
 ```bash
+# Ensure pip is up to date
+python3 -m pip install --user --upgrade pip
+```
+```bash
 # Install modern Ansible
 sudo apt update
 python3 -m pip install --user ansible
