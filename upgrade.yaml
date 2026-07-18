@@ -1,32 +1,40 @@
-
 ---
-- name: Playbook to Update cache, upgrade packages and reboot os if necessary
-  hosts: all servers
+- name: Update cache, upgrade packages and reboot OS if necessary
+  hosts: all
   become: yes
-  gather_facts: False
+  gather_facts: no
+  serial: 30%
+  ignore_unreachable: yes  # Prevents offline machines from logging as fatal errors
+
   tasks:
+    - name: Ping edge machines to verify connectivity before starting
+      ping:
+      # If a machine is offline, it drops out here quietly.
+      # The rest of the machines continue to the next task.
+
     - name: Update apt repo and cache on all Debian based boxes
-       apt:
-         update_cache: yes
-         force_apt_get: yes
-         cache_valid_time: 3600
-         
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+
     - name: Upgrade all packages on servers
       apt:
         upgrade: dist
         force_apt_get: yes
-        
+        autoremove: yes
+
     - name: Check if a reboot is needed on all servers
-      register: reboot_required_file
       stat:
         path: /var/run/reboot-required
         get_md5: no
-        
+      register: reboot_required_file
+
     - name: Reboot the server if kernel updated
       reboot:
         msg: "Reboot initiated by Ansible for kernel updates"
         connect_timeout: 5
-        reboot_timeout: 300
+        reboot_timeout: 600
         pre_reboot_delay: 0
         post_reboot_delay: 30
         test_command: uptime
